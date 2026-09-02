@@ -1,6 +1,6 @@
-# workbuddy-skills
+# Skills
 
-个人 WorkBuddy AI Skill 孵化库。基于日常工作与学习场景画像分析，孵化高频、可复用的 skill，经真实场景实测后收录。
+个人 AI Skill 孵化库。基于日常工作与学习场景画像分析，孵化高频、可复用的 skill，经真实场景实测后收录。
 
 ## Skill 目录
 
