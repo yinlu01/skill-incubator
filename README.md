@@ -1,6 +1,23 @@
 # Skills
 
-个人 AI Skill 孵化库。基于日常工作与学习场景画像分析，孵化高频、可复用的 skill，经真实场景实测后收录。
+> **把个人方法论工程化为 AI Agent 可直接调用的能力资产** —— 从真实工作场景中提炼高频工作流，沉淀为经实测的 Skill，兼容 Agent Skills 开放标准，可被主流 Agent 一键安装调用。
+
+**One-liner (EN)：** Production-ready Agent Skills distilled from real work — field-tested, standard-compliant, installable by any Agent Skills-compatible agent.
+
+## 这不是什么 / 是什么
+
+| | |
+|---|---|
+| ❌ 不是 | 提示词收藏夹、AI 使用心得、玩具 demo |
+| ✅ 是 | 可执行的工作流资产：每个 Skill 定义触发条件、输入输出、硬性约定与质量判据 |
+| ❌ 不是 | 写完就发布 |
+| ✅ 是 | 必须用真实素材跑通全链路才收录（关键环节脚本交叉验证） |
+| ❌ 不是 | 一次性对话产物 |
+| ✅ 是 | 结构化、模板化、可直接交付的产出（HTML 报告 / 结构化纪要 / 知识卡片） |
+
+**覆盖面**：9 个 Skill，跨金融分析、会议协同、知识沉淀、HR、AI 安全、学习闭环六类真实场景。
+
+原简介：个人 AI Skill 孵化库。基于日常工作与学习场景画像分析，孵化高频、可复用的 skill，经真实场景实测后收录。
 
 ## Skill 目录
 
