@@ -15,7 +15,7 @@
 | ❌ 不是 | 一次性对话产物 |
 | ✅ 是 | 结构化、模板化、可直接交付的产出（HTML 报告 / 结构化纪要 / 知识卡片） |
 
-**覆盖面**：9 个 Skill，跨金融分析、会议协同、知识沉淀、HR、AI 安全、学习闭环六类真实场景。
+**覆盖面**：10 个 Skill，跨金融分析、会议协同、知识沉淀、HR、AI 安全、学习闭环六类真实场景。
 
 原简介：个人 AI Skill 孵化库。基于日常工作与学习场景画像分析，孵化高频、可复用的 skill，经真实场景实测后收录。
 
@@ -39,12 +39,14 @@
 | [weekly-learning-review](weekly-learning-review/) | 学习周报：聚合打卡/读书/卡片产出数据（固定本地数据源） | "出个学习周报" |
 | [mba-case-analysis](mba-case-analysis/) | 运营管理案例分析框架路由（利特尔法则/瓶颈/EOQ/排队论/报童模型等），含公式手册与完整示范 | "帮我拆这个案例" |
 | [xhs-video-report](xhs-video-report/) | 小红书科普视频→HTML 图文学习报告（登录态浏览器取直链→MLX 转录→抽关键帧→速览卡+深度笔记） | "帮我总结这个视频" |
+| [bili-video-report](bili-video-report/) | B 站视频（科普/教程/多P课程）→HTML 图文学习报告（playurl 免 yt-dlp 抓取→带时间戳转录→时间戳×关键帧对齐→速览卡+时间轴导航） | "帮我总结这个 B 站视频" |
 
 ### 报告模板类资产
 
 | 资产 | 用途 |
 |---|---|
 | [xhs-video-report/references/report-template.html](xhs-video-report/references/report-template.html) | 视频学习报告 HTML 模板（速览卡 / 深度区块 / 图注 / 行动清单 / 质量说明，含打印与移动端适配） |
+| [bili-video-report/references/report-template.html](bili-video-report/references/report-template.html) | B 站版报告模板（额外含时间轴导航 / 多P分P索引 / 降级告知组件） |
 
 ## 安装
 
@@ -82,3 +84,8 @@ cp -R workbuddy-skills/<skill-name> ~/.workbuddy/skills/   # 用户级（所有�
 - 2026-09-05：第 9 个 skill [xhs-video-report](xhs-video-report/) 发布。全链路真实环境实测通过（小红书链接→HTML 报告），
   并交付首份真实报告（582 秒视频 / 3601 字转录 / 4 帧引用）。输出格式定为 **HTML**（非 Markdown），
   附可复用报告模板 `references/report-template.html`。
+- 2026-09-05：第 10 个 skill [bili-video-report](bili-video-report/) 发布。基于第三方 bilibili-summary.skill
+  评测结论重构：**抓取层**弃用 yt-dlp（实测 412）与 wbi 签名方案，改走公开 API + 浏览器 cookie + playurl 直下
+  （20 分钟视频下载 5s，yt-dlp 需 18s 且不稳定）；**媒体层**复用 xhs 管线并新增带时间戳的 `segments.json`；
+  **报告层**吸收第三方多P分组、知识图谱、降级告知优点，新增「时间戳×关键帧对齐」时间轴导航。
+  首份真实报告实测：19分50秒视频 → 下载 5s + 转录 132s（约 9 倍实时）/ 6290 字 / 461 时间戳分段 / 18 帧引用 6 帧。
