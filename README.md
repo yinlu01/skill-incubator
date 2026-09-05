@@ -53,8 +53,8 @@
 **方式一：skills CLI（推荐，跨 ~55 个 agent 通用）**
 
 ```bash
-npx skills add yinlu01/workbuddy-skills          # 全部安装
-npx skills add yinlu01/workbuddy-skills@xhs-video-report   # 单个安装
+npx skills add yinlu01/skill-incubator          # 全部安装
+npx skills add yinlu01/skill-incubator@xhs-video-report   # 单个安装
 ```
 
 遵循 [agentskills.io](https://agentskills.io) 开放标准（由 Linux Foundation 旗下 AAIF 治理）：
@@ -63,7 +63,7 @@ npx skills add yinlu01/workbuddy-skills@xhs-video-report   # 单个安装
 **方式二：手动复制**
 
 ```bash
-git clone https://github.com/yinlu01/workbuddy-skills.git
+git clone https://github.com/yinlu01/skill-incubator.git
 cp -R workbuddy-skills/<skill-name> ~/.workbuddy/skills/   # 用户级（所有项目可用）
 # 或项目级：cp -R workbuddy-skills/<skill-name> <项目>/.workbuddy/skills/
 ```
