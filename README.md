@@ -21,6 +21,13 @@
 | [feynman-flashcard](feynman-flashcard/) | 笔记反向生成费曼自测问答卡（概念/机制/应用/辨析四层，先答后看，间隔重复） | "考考我" |
 | [weekly-learning-review](weekly-learning-review/) | 学习周报：聚合打卡/读书/卡片产出数据（固定本地数据源） | "出个学习周报" |
 | [mba-case-analysis](mba-case-analysis/) | 运营管理案例分析框架路由（利特尔法则/瓶颈/EOQ/排队论/报童模型等），含公式手册与完整示范 | "帮我拆这个案例" |
+| [xhs-video-report](xhs-video-report/) | 小红书科普视频→HTML 图文学习报告（登录态浏览器取直链→MLX 转录→抽关键帧→速览卡+深度笔记） | "帮我总结这个视频" |
+
+### 报告模板类资产
+
+| 资产 | 用途 |
+|---|---|
+| [xhs-video-report/references/report-template.html](xhs-video-report/references/report-template.html) | 视频学习报告 HTML 模板（速览卡 / 深度区块 / 图注 / 行动清单 / 质量说明，含打印与移动端适配） |
 
 ## 安装
 
@@ -43,3 +50,6 @@ cp -R workbuddy-skills/<skill-name> ~/.workbuddy/skills/   # 用户级（所有�
 ## 状态
 
 - 2026-09-03：首批 8 个 skill（办公 5 + 学习 3）发布。feynman-flashcard 与 mba-case-analysis 经功能实测验证。
+- 2026-09-05：第 9 个 skill [xhs-video-report](xhs-video-report/) 发布。全链路真实环境实测通过（小红书链接→HTML 报告），
+  并交付首份真实报告（582 秒视频 / 3601 字转录 / 4 帧引用）。输出格式定为 **HTML**（非 Markdown），
+  附可复用报告模板 `references/report-template.html`。

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{标题}}</title>
+<style>
+:root{
+  --bg:#ffffff; --surface:#F8FAFC; --surface2:#F1F5F9;
+  --border:#E2E8F0; --border-strong:#CBD5E1;
+  --text:#1E293B; --muted:#64748B; --faint:#94A3B8;
+  --accent:#2563EB; --accent-soft:#EFF6FF;
+  --amber-soft:#FFFBEB; --amber:#B45309;
+  --green-soft:#F0FDF4; --green:#15803D;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--surface2); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Segoe UI",sans-serif;
+  font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px; margin:0 auto; padding:32px 20px 80px}
+.card{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:32px; margin-bottom:20px}
+
+.kicker{font-size:12px; letter-spacing:.14em; color:var(--faint); text-transform:uppercase; margin-bottom:10px}
+h1{font-size:27px; line-height:1.35; margin:0 0 6px; font-weight:600; letter-spacing:-.01em}
+.sub{color:var(--muted); font-size:14px; margin-bottom:20px}
+.meta{display:flex; flex-wrap:wrap; gap:8px}
+.meta span{background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:4px 12px; font-size:12.5px; color:var(--muted)}
+.meta span b{color:var(--text); font-weight:500}
+.meta a{color:var(--accent); text-decoration:none}
+
+.quick{background:var(--accent-soft); border:1px solid #BFDBFE; border-radius:14px; padding:28px; margin-bottom:20px}
+.quick .label{font-size:12px; letter-spacing:.14em; color:var(--accent); text-transform:uppercase; margin-bottom:14px; font-weight:500}
+.lead{font-size:19px; line-height:1.6; font-weight:500; margin:0 0 22px; color:#0F172A}
+.lead em{font-style:normal; background:#DBEAFE; padding:1px 5px; border-radius:4px}
+.points{margin:0 0 20px; padding:0; list-style:none; counter-reset:p}
+.points li{counter-increment:p; position:relative; padding-left:34px; margin-bottom:12px; font-size:14.5px}
+.points li::before{
+  content:counter(p); position:absolute; left:0; top:2px;
+  width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff;
+  font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center;
+}
+.verdict{background:#fff; border:1px solid #BFDBFE; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:14px}
+.verdict .stars{color:#F59E0B; letter-spacing:2px; margin-right:8px; font-size:13px}
+.act{background:var(--green-soft); border:1px solid #BBF7D0; border-radius:10px; padding:14px 16px; font-size:14px; color:#14532D}
+
+h2{font-size:20px; margin:0 0 4px; font-weight:600}
+.h2note{color:var(--faint); font-size:13px; margin-bottom:20px}
+h3{font-size:16px; margin:26px 0 8px; font-weight:600; color:#0F172A}
+p{margin:0 0 14px}
+ul.clean{margin:0 0 14px; padding-left:20px}
+ul.clean li{margin-bottom:7px}
+
+.quote{border-left:3px solid var(--accent); background:var(--surface); padding:12px 18px; margin:0 0 14px; border-radius:0 8px 8px 0; font-size:15px}
+.quote .src{display:block; color:var(--muted); font-size:12.5px; margin-top:6px}
+
+.figs{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0 8px}
+figure{margin:0}
+figure img{width:100%; border-radius:10px; border:1px solid var(--border); display:block}
+figure figcaption{font-size:12.5px; color:var(--muted); margin-top:8px; line-height:1.6}
+figure figcaption b{color:var(--text); font-weight:500}
+
+.callout{background:var(--amber-soft); border:1px solid #FDE68A; border-radius:10px; padding:14px 16px; margin:0 0 16px; font-size:14px; color:#78350F}
+.callout b{color:var(--amber)}
+
+.react{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:2px 18px 14px; margin-bottom:16px}
+.react h3{margin-top:16px}
+.react p{font-size:14.5px}
+
+table{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px}
+th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top}
+th{color:var(--muted); font-weight:500; width:88px; background:var(--surface)}
+
+.todo{list-style:none; padding:0; margin:0}
+.todo li{padding:11px 14px; border:1px solid var(--border); border-radius:9px; margin-bottom:8px; font-size:14.5px; background:var(--surface); display:flex; gap:11px; align-items:flex-start}
+.todo li::before{content:""; flex:0 0 15px; height:15px; border:1.5px solid var(--border-strong); border-radius:4px; margin-top:4px}
+.todo a{color:var(--accent); text-decoration:none}
+
+footer{text-align:center; color:var(--faint); font-size:12.5px; padding-top:8px; line-height:1.9}
+@media print{body{background:#fff} .wrap{max-width:100%; padding:0} .card,.quick{break-inside:avoid; border-color:#ddd}}
+@media (max-width:640px){.figs{grid-template-columns:1fr} .card{padding:22px} h1{font-size:23px} .lead{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card">
+    <div class="kicker">小红书视频学习报告 · {{日期}}</div>
+    <h1>{{标题}}</h1>
+    <div class="sub">{{一句话副标题}}</div>
+    <div class="meta">
+      <span>作者 <b>{{博主}}</b></span>
+      <span>时长 <b>{{X 分 Y 秒}}</b></span>
+      <span>转录 <b>{{N}} 字</b></span>
+      <span>来源 <a href="{{原链接}}">小红书</a></span>
+    </div>
+  </div>
+
+  <div class="quick">
+    <div class="label">速览卡 · 30 秒</div>
+    <p class="lead">{{一句话结论，最反直觉或最有用的那个点}}</p>
+    <ol class="points">
+      <li>{{核心点 1}}</li>
+      <li>{{核心点 2}}</li>
+      <li>{{核心点 3}}</li>
+    </ol>
+    <div class="verdict"><span class="stars">{{★ 数量}}</span><b>值不值得细看：</b>{{判断 + 理由}}</div>
+    <div class="act"><b>一个行动 →</b> {{学完立刻能做的一件事，带具体链接}}</div>
+  </div>
+
+  <div class="card">
+    <h2>1 · {{问题重述}}</h2>
+    <div class="h2note">{{这节解决什么}}</div>
+    <p>{{正文}}</p>
+    <div class="figs">
+      <figure><img src="frames/{{f01}}.jpg" alt=""><figcaption><b>{{位置}}（约 时间）</b>：{{图注：这张图证明了什么}}</figcaption></figure>
+      <figure><img src="frames/{{f02}}.jpg" alt=""><figcaption><b>{{位置}}（约 时间）</b>：{{图注}}</figcaption></figure>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2 · {{可复用方法/操作技术}}</h2>
+    <div class="h2note">{{副说明}}</div>
+    <h3>{{子点}}</h3>
+    <p>{{正文}}</p>
+    <div class="callout"><b>值得借鉴：</b>{{这个做法能迁移到用户自己工作里的什么}}</div>
+  </div>
+
+  <div class="card">
+    <h2>3 · {{心法/观点层}}</h2>
+    <div class="h2note">{{副说明}}</div>
+    <div class="quote">"{{金句}}。"<span class="src">—— {{出处/语境}}</span></div>
+    <ul class="clean"><li>{{要点}}</li></ul>
+  </div>
+
+  <div class="card">
+    <h2>4 · 反直觉点 / 增量认知</h2>
+    <div class="h2note">这一节是整份报告最值钱的部分</div>
+    <ul class="clean"><li><b>{{点}}</b>{{展开}}</li></ul>
+  </div>
+
+  <div class="card">
+    <h2>5 · 与我何干</h2>
+    <div class="h2note">把别人的知识变成自己的资产</div>
+    <div class="react">
+      <h3>{{用户真正在做的项目/方向}}</h3>
+      <p>{{具体共振点，引用项目名，不能空谈}}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>6 · 行动清单</h2>
+    <div class="h2note">学完能立刻做的事</div>
+    <ul class="todo"><li>{{带具体链接/文件名的动作}}</li></ul>
+  </div>
+
+  <div class="card">
+    <h2>元数据与质量说明</h2>
+    <div class="h2note">这份报告是怎么来的，哪些地方可能有偏差</div>
+    <table>
+      <tr><th>转录</th><td>{{字数}} 字，whisper-large-v3-turbo</td></tr>
+      <tr><th>纠错</th><td>{{ASR 专有名词纠错列表}}</td></tr>
+      <tr><th>画面</th><td>抽 {{N}} 帧，引用 {{M}} 帧</td></tr>
+      <tr><th>遗留</th><td>{{画面有但口播未念的信息}}</td></tr>
+    </table>
+  </div>
+
+  <footer>由 xhs-video-report skill 生成 · 标签：{{tags}}</footer>
+
+</div>
+</body>
+</html>
