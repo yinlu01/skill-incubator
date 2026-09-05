@@ -9,8 +9,8 @@ description: 把笔记/知识卡片/书籍章节反向生成费曼自测问答�
 
 ## 输入源（按优先级）
 
-1. 用户指定的 Obsidian 笔记/卡片（Vault：`~//Obsidian/`，含 AI 技术卡片体系）
-2. 用户当前学习进度对应的主题（可读 `~//WorkBuddy/2026-08-06-13-47-58/agent_study_plan.json`，按当天日期定位当日 topic，无需用户提供）
+1. 用户指定的 Obsidian 笔记/卡片（Vault：`~/Obsidian/`，含 AI 技术卡片体系）
+2. 用户当前学习进度对应的主题（读取用户指定的学习规划 JSON，按当天日期定位当日 topic；路径每次由用户提供，或设置环境变量 `STUDY_PLAN_JSON`，无需硬编码）
 3. 近期微信读书划线（可调用 `weread-skills` 拉取）
 4. 用户直接粘贴的内容
 

@@ -1,0 +1,21 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# ---- 本地缓存与凭据（绝不提交）----
+*.cache
+cookies.txt
+workdir/
+bili_work/
+tmp/
+
+# ---- 媒体处理中间产物 ----
+*.mp4
+*.wav
+*.log
+
+# ---- OS ----
+.DS_Store

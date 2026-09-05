@@ -38,8 +38,7 @@ ffmpeg 双输入 -c copy             → 直接下 DASH 并合并，20 分钟视
 
 ## 前置依赖
 
-- Python 环境：`~//.workbuddy/binaries/python/envs/default/bin/python`
-  （装有 `imageio-ffmpeg` + `mlx-whisper`；用错解释器会报 ModuleNotFoundError）
+- Python 3.10+ 环境（建议独立 venv）：需安装 `imageio-ffmpeg` + `mlx-whisper`，详见文末「安装（外部用户）」一节
 - `bsk`（`~/.local/bin/bsk`）：仅在导出 cookie 时用，浏览器需已登录 B 站
 - 无 yt-dlp 依赖
 
@@ -48,7 +47,7 @@ ffmpeg 双输入 -c copy             → 直接下 DASH 并合并，20 分钟视
 ## 工作流
 
 ```bash
-PY=~//.workbuddy/binaries/python/envs/default/bin/python
+PY=python3   # 你自己的 Python 3.10+ 解释器（已 pip install -r requirements.txt）
 cd ~/.workbuddy/skills/bili-video-report/scripts
 
 # 1) 解析链接 → 元数据/分P → 下载（cookie 自动导出/复用）
@@ -101,12 +100,13 @@ $PY chunk.py --workdir /tmp/bili_work            # 自动按时长分档（15分
 ## 归档约定（Obsidian）
 
 ```
-~//Obsidian/AI技术/视频学习报告/{YYYY-MM-DD}-bili-{英文短名}.html
-~//Obsidian/AI技术/视频学习报告/frames/{ASCII语义名}.jpg   # 如 bili_rank_chart.jpg
+~/Obsidian/AI技术/视频学习报告/{分类}/{视频标题}.html            # 如 科普/为了知晓地球年龄，人类究竟有多难？.html
+~/Obsidian/AI技术/视频学习报告/{分类}/frames/{ASCII语义名}.jpg   # 如 科普/frames/bili_earthage_kelvin.jpg
 ```
 
 - 报告 HTML 内部用相对路径 `frames/xxx.jpg` 引图；**文件名一律 ASCII**，中文只出现在标题里。
 - 帧只归档引用的（6 张左右），不搬全部 18 张。
+- 归档根目录可通过环境变量 `OBSIDIAN_VIDEO_REPORT_DIR` 覆盖（默认 `~/Obsidian/AI技术/视频学习报告/`）。
 
 ## 踩坑清单（都踩过，别再踩）
 
@@ -120,3 +120,33 @@ $PY chunk.py --workdir /tmp/bili_work            # 自动按时长分档（15分
 5. `bsk evaluate --json` 的返回值在 `value` 键里，不在 `result`。
 6. 用错 Python（没装 imageio_ffmpeg/mlx_whisper 的解释器）→ ModuleNotFoundError，
    固定用上面 `PY` 指的那个环境。
+
+## 安装（外部用户）
+
+```bash
+# 1. 准备 Python 3.10+ venv
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt        # imageio-ffmpeg + mlx-whisper
+
+# 2. 安装 browser-skill（仅用于导出 B 站 cookie，浏览器需已登录 B 站）
+#    由宿主 Agent 平台提供，或参考 browser-skill 文档安装，确保 bsk 在 PATH
+
+# 3. 运行
+PY=python3
+cd scripts
+$PY fetch_bili.py "<B站链接或BV号>" --workdir /tmp/bili_work
+$PY media.py --meta /tmp/bili_work/meta.json --workdir /tmp/bili_work --frames 18
+```
+
+> **平台限制**：`mlx-whisper` 仅支持 Apple Silicon（macOS）。Linux/Windows 用户请改用
+> `faster-whisper`（需自行替换 media.py 的转录后端）。
+
+## 隐私与安全
+
+- **所有数据都在你本机**：视频下载、语音转录、HTML 报告生成均在本地完成，不上传任何
+  第三方服务器（仅向 B 站官方 API 请求播放地址、向 HuggingFace 拉取模型权重）。
+- **B 站 cookie 是本地凭据**：skill 通过 `bsk` 从你已登录的浏览器导出 cookie 到
+  `~/.cache/bili-video-report/cookies.txt`，仅用于通过 B 站播放地址接口的登录校验，
+  **不写入报告、不上传、不打印**。请像保护密码一样保护该文件（可 `chmod 600`）。
+- **报告在你自己的 Obsidian**：归档路径默认识别你的 Vault，不会外传。
+- 本 skill 不收集任何使用数据、不打电话、不访问与 B 站无关的站点。
