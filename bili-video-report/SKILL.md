@@ -51,11 +51,12 @@ ffmpeg 双输入 -c copy             → 直接下 DASH 并合并，20 分钟视
 PY=~//.workbuddy/binaries/python/envs/default/bin/python
 cd ~/.workbuddy/skills/bili-video-report/scripts
 
-# 1) 解析链接 → 元数据/分P → 下载视频（cookie 自动导出/复用）
+# 1) 解析链接 → 元数据/分P → 下载（cookie 自动导出/复用）
 $PY fetch_bili.py "<B站链接或BV号>" --workdir /tmp/bili_work
-#    --pages 1-5 取多P（默认第1P）；--no-download 只看元数据；--refresh-cookie 重导
+#    --pages 1-4 取多P（默认第1P）；--no-download 只看元数据；--refresh-cookie 重导
 
 # 2) 抽音频 → 转录（落盘 segments.json）→ 抽 18 帧
+#    多 P 时加 --page N，workdir 用 /tmp/bili_work/pN
 $PY media.py --meta /tmp/bili_meta.json --workdir /tmp/bili_work --frames 18
 
 # 3) 按 references/report-template.html 撰写报告，归档 Obsidian（见下）
@@ -79,12 +80,15 @@ $PY media.py --meta /tmp/bili_meta.json --workdir /tmp/bili_work --frames 18
 
 ## 多 P 课程与长视频
 
-- 多 P：`--pages all` 或逐 P 跑，每 P 一份单页报告 + 一份**总索引页**
-  （模板里「分 P 索引」卡片，一 P 一张速览卡）。文件名 `{日期}-bili-{BV}-p{N}.html`。
+- 多 P 是**一等公民**：`fetch_bili.py --pages 1-4 / all` 逐 P 下载（`p{N}.mp4`）并探字幕，
+  meta.json 的 `items[]` 是 per-P 完整数据源（cid/part/duration/subtitle/video_path）。
+  然后逐 P 跑媒体层：`media.py --meta <meta.json> --page N --workdir <dir>/pN`
+- 报告 = 1 份**总索引页**（模板「分 P 索引」卡片，一 P 一张速览卡）
+  + 每 P 一份单页报告。文件名 `{日期}-bili-{英文短名}-p{N}.html`。
 - 长视频分块防上下文爆炸：`<30 分钟` 全量转录进上下文；`30–90 分钟` 按 segment
   分块逐块摘要再合并；`>90 分钟` 按 P 独立处理。
-- 多 P 的 `meta.json` 里有 `pages[]`（page/cid/part/duration），下载第 N P 用
-  `--pages N`。
+- 翻译腔多 P（日/英/韩配音版）实测会出现：转录多语言混杂，报告只精做中文 P，
+  其余 P 在索引页标注语言与一句话结论即可，不必逐 P 深写。
 
 ## 归档约定（Obsidian）
 

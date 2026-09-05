@@ -163,6 +163,8 @@ def main() -> None:
     ap.add_argument("--workdir", default="/tmp/bili_work")
     ap.add_argument("--frames", type=int, default=TARGET_FRAMES,
                     help="抽帧数量，默认 18")
+    ap.add_argument("--page", type=int, default=0,
+                    help="多 P 时指定处理第几 P（meta.items 里选）")
     ap.add_argument("--no-transcribe", action="store_true")
     args = ap.parse_args()
 
@@ -172,6 +174,15 @@ def main() -> None:
     if args.meta:
         with open(args.meta, encoding="utf-8") as f:
             meta = json.load(f)
+
+    # 多 P：meta["items"] 是逐 P 数据源，按 --page 选出该 P 的元数据
+    if args.page and meta.get("items"):
+        pick = next((it for it in meta["items"]
+                     if it.get("page") == args.page), None)
+        if pick is None:
+            sys.exit(f"meta 里没有 P{args.page}。可选："
+                     f"{[it.get('page') for it in meta['items']]}")
+        meta = {**meta, **pick}
 
     url = args.video_url or meta.get("video_path") or meta.get("video", "")
     if not url:

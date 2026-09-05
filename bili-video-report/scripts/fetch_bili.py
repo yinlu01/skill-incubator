@@ -408,17 +408,6 @@ def main() -> None:
         _dump(result, args.out)
         return
 
-    # 只处理第一 P（多 P 全流程在 SKILL.md 里说明：逐 P 调用）
-    page = chosen[0]
-    result["page"] = page
-    result["cid"] = pages[page - 1]["cid"] if pages else d.get("cid", 0)
-
-    result["subtitle"] = try_subtitle(bvid, result["cid"])
-    if result["subtitle"]:
-        print(f"[字幕] 命中 CC 字幕 {len(result['subtitle'])} 字", file=sys.stderr)
-    else:
-        print("[字幕] 无（常态，走转录）", file=sys.stderr)
-
     cookie, cmsg = ensure_cookie(args.refresh_cookie)
     if not cookie:
         result["diagnosis"] = f"cookie 不可用：{cmsg}"
@@ -426,15 +415,45 @@ def main() -> None:
         sys.exit(1)
     print(f"[cookie] {cmsg}", file=sys.stderr)
 
-    dest = os.path.join(args.workdir, "video.mp4")
-    ok, msg = download(bvid, result["cid"], dest, cookie)
-    result["video_path"] = dest if ok else ""
-    result["ok"] = ok
-    result["diagnosis"] = msg
-    print(f"[下载] {msg}", file=sys.stderr)
+    # 多 P：逐 P 下载 + 探字幕，items[] 是 per-P 的完整数据源；
+    # 单 P 兼容：同时保留顶层 page/cid/video_path（media.py 老用法不破坏）
+    items = []
+    multi = total > 1
+    for page in chosen:
+        pinfo = pages[page - 1] if pages else {}
+        cid = pinfo.get("cid") or d.get("cid", 0)
+        part = pinfo.get("part", "")
+        item = {"page": page, "cid": cid, "part": part,
+                "duration": pinfo.get("duration", 0), "subtitle": "",
+                "video_path": "", "ok": False, "diagnosis": ""}
+        print(f"\n[== P{page}/{total} ==] {part}", file=sys.stderr)
+
+        item["subtitle"] = try_subtitle(bvid, cid)
+        if item["subtitle"]:
+            print(f"[字幕] P{page} 命中 CC 字幕 {len(item['subtitle'])} 字",
+                  file=sys.stderr)
+
+        dest = os.path.join(args.workdir,
+                            f"p{page}.mp4" if multi else "video.mp4")
+        ok, msg = download(bvid, cid, dest, cookie)
+        item["video_path"] = dest if ok else ""
+        item["ok"] = ok
+        item["diagnosis"] = msg
+        print(f"[下载] P{page} {msg}", file=sys.stderr)
+        items.append(item)
+
+    result["items"] = items
+    result["ok"] = all(it["ok"] for it in items)
+    first = items[0]
+    result["page"] = first["page"]
+    result["cid"] = first["cid"]
+    result["subtitle"] = first["subtitle"]
+    result["video_path"] = first["video_path"]
+    result["diagnosis"] = "; ".join(
+        f"P{it['page']}: {it['diagnosis']}" for it in items)
 
     _dump(result, args.out)
-    if not ok:
+    if not result["ok"]:
         sys.exit(1)
 
 
