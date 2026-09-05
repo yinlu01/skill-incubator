@@ -59,6 +59,11 @@ $PY fetch_bili.py "<B站链接或BV号>" --workdir /tmp/bili_work
 #    多 P 时加 --page N，workdir 用 /tmp/bili_work/pN
 $PY media.py --meta /tmp/bili_meta.json --workdir /tmp/bili_work --frames 18
 
+# 2.5) 长视频（≥30 分钟）先切块，再逐块阅读摘要、最后合并成稿
+$PY chunk.py --workdir /tmp/bili_work            # 自动按时长分档（15分钟/块）
+#    产物 chunks/chunk_NN.md（带 [MM:SS-MM:SS] 标题）+ manifest.json
+#    <30 分钟：不切块全量；30–90 分钟：15 分钟/块；>90 分钟：优先分 P 处理
+
 # 3) 按 references/report-template.html 撰写报告，归档 Obsidian（见下）
 ```
 
@@ -85,8 +90,11 @@ $PY media.py --meta /tmp/bili_meta.json --workdir /tmp/bili_work --frames 18
   然后逐 P 跑媒体层：`media.py --meta <meta.json> --page N --workdir <dir>/pN`
 - 报告 = 1 份**总索引页**（模板「分 P 索引」卡片，一 P 一张速览卡）
   + 每 P 一份单页报告。文件名 `{日期}-bili-{英文短名}-p{N}.html`。
-- 长视频分块防上下文爆炸：`<30 分钟` 全量转录进上下文；`30–90 分钟` 按 segment
-  分块逐块摘要再合并；`>90 分钟` 按 P 独立处理。
+- 长视频分块（`scripts/chunk.py`，实测已验证）：`<30 分钟` 全量转录进上下文；
+  `30–90 分钟` 按 segment 切 15 分钟块（`chunk.py --workdir ...`，产物 chunks/*.md
+  带 [MM:SS-MM:SS] 标题），逐块摘要后合并成稿；`>90 分钟` 按 P 独立处理。
+  首个实测样本：43 分钟科普视频 → 15141 字 / 1223 段 → 3 块 → 报告
+  `2026-09-05-bili-earth-age-history.html`
 - 翻译腔多 P（日/英/韩配音版）实测会出现：转录多语言混杂，报告只精做中文 P，
   其余 P 在索引页标注语言与一句话结论即可，不必逐 P 深写。
 
