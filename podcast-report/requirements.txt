@@ -1,0 +1,5 @@
+# podcast-report 运行时依赖
+# 注意：mlx-whisper 仅支持 Apple Silicon (macOS)。
+# Linux/Windows 用户请改用 faster-whisper，并替换 media.py 里的转录后端。
+imageio-ffmpeg>=2.9.0
+mlx-whisper>=0.1.0

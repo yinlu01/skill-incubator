@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{标题}}</title>
+<style>
+:root{
+  --bg:#ffffff; --surface:#F8FAFC; --surface2:#F1F5F9;
+  --border:#E2E8F0; --border-strong:#CBD5E1;
+  --text:#1E293B; --muted:#64748B; --faint:#94A3B8;
+  --accent:#7C3AED; --accent-soft:#F5F3FF;
+  --amber-soft:#FFFBEB; --amber:#B45309;
+  --green-soft:#F0FDF4; --green:#15803D;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--surface2); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Segoe UI",sans-serif;
+  font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px; margin:0 auto; padding:32px 20px 80px}
+.card{background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:32px; margin-bottom:20px}
+
+.kicker{font-size:12px; letter-spacing:.14em; color:var(--faint); text-transform:uppercase; margin-bottom:10px}
+h1{font-size:27px; line-height:1.35; margin:0 0 6px; font-weight:600; letter-spacing:-.01em}
+.sub{color:var(--muted); font-size:14px; margin-bottom:20px}
+.meta{display:flex; flex-wrap:wrap; gap:8px}
+.meta span{background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:4px 12px; font-size:12.5px; color:var(--muted)}
+.meta span b{color:var(--text); font-weight:500}
+.meta a{color:var(--accent); text-decoration:none}
+
+.quick{background:var(--accent-soft); border:1px solid #DDD6FE; border-radius:14px; padding:28px; margin-bottom:20px}
+.quick .label{font-size:12px; letter-spacing:.14em; color:var(--accent); text-transform:uppercase; margin-bottom:14px; font-weight:500}
+.lead{font-size:19px; line-height:1.6; font-weight:500; margin:0 0 22px; color:#0F172A}
+.lead em{font-style:normal; background:#EDE9FE; padding:1px 5px; border-radius:4px}
+.points{margin:0 0 20px; padding:0; list-style:none; counter-reset:p}
+.points li{counter-increment:p; position:relative; padding-left:34px; margin-bottom:12px; font-size:14.5px}
+.points li::before{
+  content:counter(p); position:absolute; left:0; top:2px;
+  width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff;
+  font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center;
+}
+.verdict{background:#fff; border:1px solid #DDD6FE; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:14px}
+.verdict .stars{color:#F59E0B; letter-spacing:2px; margin-right:8px; font-size:13px}
+.act{background:var(--green-soft); border:1px solid #BBF7D0; border-radius:10px; padding:14px 16px; font-size:14px; color:#14532D}
+
+h2{font-size:20px; margin:0 0 4px; font-weight:600}
+.h2note{color:var(--faint); font-size:13px; margin-bottom:20px}
+h3{font-size:16px; margin:26px 0 8px; font-weight:600; color:#0F172A}
+p{margin:0 0 14px}
+ul.clean{margin:0 0 14px; padding-left:20px}
+ul.clean li{margin-bottom:7px}
+
+.quote{border-left:3px solid var(--accent); background:var(--surface); padding:12px 18px; margin:0 0 14px; border-radius:0 8px 8px 0; font-size:15px}
+.quote .src{display:block; color:var(--muted); font-size:12.5px; margin-top:6px}
+
+.callout{background:var(--amber-soft); border:1px solid #FDE68A; border-radius:10px; padding:14px 16px; margin:0 0 16px; font-size:14px; color:#78350F}
+.callout b{color:var(--amber)}
+
+.react{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:2px 18px 14px; margin-bottom:16px}
+.react h3{margin-top:16px}
+.react p{font-size:14.5px}
+
+table{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px}
+th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top}
+th{color:var(--muted); font-weight:500; width:88px; background:var(--surface)}
+
+.todo{list-style:none; padding:0; margin:0}
+.todo li{padding:11px 14px; border:1px solid var(--border); border-radius:9px; margin-bottom:8px; font-size:14.5px; background:var(--surface); display:flex; gap:11px; align-items:flex-start}
+.todo li::before{content:""; flex:0 0 15px; height:15px; border:1.5px solid var(--border-strong); border-radius:4px; margin-top:4px}
+.todo a{color:var(--accent); text-decoration:none}
+
+/* 章节时间轴：本 skill 相对视频类的核心资产 —— 时间戳来自 shownotes 或 segments.json，不许编 */
+.tl{list-style:none; padding:0; margin:0}
+.tl li{display:flex; gap:14px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--border); font-size:14.5px}
+.tl li:last-child{border-bottom:none}
+.tl .t{color:var(--accent); font-variant-numeric:tabular-nums; font-size:13px; font-weight:500; min-width:62px; padding-top:2px}
+.tl .d{flex:1}
+.tl .d b{font-weight:600}
+.tl .d span{display:block; color:var(--muted); font-size:13.5px; margin-top:3px; line-height:1.65}
+
+/* 主播 / 嘉宾 */
+.people{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:6px}
+.people div{border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface)}
+.people .role{font-size:12px; color:var(--accent); font-weight:500; margin-bottom:3px}
+.people .nm{font-size:14.5px; font-weight:500}
+.people .bio{font-size:13px; color:var(--muted); line-height:1.6; margin-top:4px}
+
+/* Shownotes 原文（折叠，保留原始信息密度，含延伸阅读/论文清单） */
+details{border:1px solid var(--border); border-radius:10px; background:var(--surface); padding:12px 16px; margin-top:6px}
+summary{cursor:pointer; font-size:14px; font-weight:500; color:var(--text); outline:none}
+details .body{white-space:pre-wrap; font-size:13.5px; color:var(--muted); line-height:1.75; margin-top:10px; padding-top:10px; border-top:1px solid var(--border)}
+
+/* 降级告知：拿不到音频/转录为空时必须出现，不许删 */
+.degrade{border:2px solid #FCA5A5; background:#FEF2F2}
+.degrade .label{color:#B91C1C}
+.degrade p{font-size:14.5px; color:#7F1D1D; margin:0 0 10px}
+
+footer{text-align:center; color:var(--faint); font-size:12.5px; padding-top:8px; line-height:1.9}
+@media print{body{background:#fff} .wrap{max-width:100%; padding:0} .card,.quick{break-inside:avoid; border-color:#ddd}}
+@media (max-width:640px){.people{grid-template-columns:1fr} .card{padding:22px} h1{font-size:23px} .lead{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ 头部 ============ -->
+  <div class="card">
+    <div class="kicker">播客学习报告 · {{日期}}</div>
+    <h1>{{标题}}</h1>
+    <div class="sub">{{一句话副标题：这期到底讲了什么，不是节目简介的复述}}</div>
+    <div class="meta">
+      <span>节目 <b>{{节目名}}</b></span>
+      <span>主播 <b>{{主播/作者}}</b></span>
+      <span>时长 <b>{{H 小时 M 分}}</b></span>
+      <span>转录 <b>{{N}} 字 / {{M}} 段带时间戳</b></span>
+      <span>来源 <a href="{{原链接}}">小宇宙</a></span>
+    </div>
+  </div>
+
+  <!-- ============ 速览卡：30 秒判断值不值得听完 ============ -->
+  <div class="quick">
+    <div class="label">速览 · 值不值得听</div>
+    <p class="lead">{{一句话结论：这期最值钱的东西是什么}}</p>
+    <ol class="points">
+      <li>{{核心增量 1}}</li>
+      <li>{{核心增量 2}}</li>
+      <li>{{核心增量 3}}</li>
+      <li>{{核心增量 4}}</li>
+      <li>{{核心增量 5}}</li>
+    </ol>
+    <div class="verdict">
+      <span class="stars">{{★★★★☆}}</span>{{推荐判断：适合谁听 / 哪段可以跳过 / 信息密度评价}}
+    </div>
+    <div class="act"><b>听法建议：</b>{{例如「00:00–25:00 可 2 倍速，25:00 后建议原速」}}</div>
+  </div>
+
+  <!-- ============ 主播与嘉宾 ============ -->
+  <div class="card">
+    <h2>谁在讲</h2>
+    <div class="h2note">判断信息可信度的第一层：这人凭什么讲这个题目</div>
+    <div class="people">
+      <div>
+        <div class="role">主播</div>
+        <div class="nm">{{姓名}}</div>
+        <div class="bio">{{身份 / 背景}}</div>
+      </div>
+      <div>
+        <div class="role">嘉宾</div>
+        <div class="nm">{{姓名}}</div>
+        <div class="bio">{{身份 / 背景 / 代表作}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 章节时间轴（播客独有能力：shownotes 自带时间戳） ============ -->
+  <div class="card">
+    <h2>章节时间轴</h2>
+    <div class="h2note">时间戳来自 shownotes 或 segments.json 检索，<b>不许凭印象编</b></div>
+    <ul class="tl">
+      <li><span class="t">{{00:00:00}}</span><span class="d"><b>{{章节标题}}</b><span>{{这一章讲了什么、贡献了什么结论}}</span></span></li>
+      <li><span class="t">{{00:12:30}}</span><span class="d"><b>{{章节标题}}</b><span>{{……}}</span></span></li>
+      <li><span class="t">{{00:31:00}}</span><span class="d"><b>{{章节标题}}</b><span>{{……}}</span></span></li>
+    </ul>
+  </div>
+
+  <!-- ============ 深度笔记 ============ -->
+  <div class="card">
+    <h2>深度笔记</h2>
+    <div class="h2note">按主题重组，不要按时间线流水账</div>
+
+    <h3>{{主题一}}</h3>
+    <p>{{论述 + 论据}}</p>
+    <div class="quote">
+      「{{原话引用}}」
+      <span class="src">— {{说话人}} · {{MM:SS}}</span>
+    </div>
+
+    <h3>{{主题二}}</h3>
+    <p>{{论述}}</p>
+    <ul class="clean">
+      <li>{{要点}}</li>
+      <li>{{要点}}</li>
+    </ul>
+
+    <div class="callout"><b>注意：</b>{{需要打折听的地方 / 讲者立场 / 时效性提醒}}</div>
+  </div>
+
+  <!-- ============ 反直觉 / 增量认知（全片最值钱，禁止复述内容） ============ -->
+  <div class="card">
+    <h2>反直觉点 · 增量认知</h2>
+    <div class="h2note">只写「听完才知道、且和常识相反」的东西；与常识一致的删掉</div>
+    <ul class="clean">
+      <li><b>{{反直觉点}}：</b>{{为什么反直觉 + 背后的机制}}</li>
+      <li><b>{{反直觉点}}：</b>{{……}}</li>
+      <li><b>{{反直觉点}}：</b>{{……}}</li>
+    </ul>
+  </div>
+
+  <!-- ============ 与我何干（必须落到用户真实项目） ============ -->
+  <div class="card">
+    <h2>与我何干</h2>
+    <div class="h2note">引用用户真实项目/关注点，不写空泛的「值得借鉴」</div>
+    <div class="react">
+      <h3>{{落点一标题}}</h3>
+      <p>{{具体怎么接：改哪个模块的哪一条}}</p>
+      <h3>{{落点二标题}}</h3>
+      <p>{{……}}</p>
+      <h3>{{落点三标题}}</h3>
+      <p>{{……}}</p>
+    </div>
+  </div>
+
+  <!-- ============ 延伸资源 ============ -->
+  <div class="card">
+    <h2>延伸资源</h2>
+    <div class="h2note">节目里提到的论文 / 项目 / 人物，能核实的都核实一遍</div>
+    <table>
+      <tr><th>论文</th><td>{{标题}} — {{作者}}（{{年份}}）</td></tr>
+      <tr><th>项目</th><td>{{名称}} — <a href="{{URL}}">{{URL}}</a></td></tr>
+      <tr><th>人物</th><td>{{姓名}} — {{身份}}</td></tr>
+    </table>
+  </div>
+
+  <!-- ============ Shownotes 原文（保留原始信息密度） ============ -->
+  <div class="card">
+    <h2>Shownotes 原文</h2>
+    <div class="h2note">节目方自述，含章节与延伸阅读清单，转录有误时可对照</div>
+    <details>
+      <summary>展开全文（{{N}} 字）</summary>
+      <div class="body">{{shownotes 原文}}</div>
+    </details>
+  </div>
+
+  <!-- ============ 行动清单 ============ -->
+  <div class="card">
+    <h2>行动清单</h2>
+    <div class="h2note">听完真的要去做的，最多 5 条</div>
+    <ul class="todo">
+      <li>{{动作}}</li>
+      <li>{{动作}}</li>
+      <li>{{动作}}</li>
+    </ul>
+  </div>
+
+  <!-- 降级告知：仅在拿不到音频 / 转录为空时出现；正常情况整块删除 -->
+  <!--
+  <div class="card degrade">
+    <div class="kicker label">降级告知</div>
+    <p><b>原因：</b>{{付费单集无音频直链 / 转录为空}}</p>
+    <p>本单集无法自动获取音频，以下内容基于 shownotes 与公开信息整理，未含口播内容。</p>
+  </div>
+  -->
+
+  <footer>
+    {{节目名}} · {{标题}}<br>
+    全量转录 {{N}} 字｜本地 mlx-whisper 转录，音频不上传<br>
+    生成于 {{日期}} · podcast-report
+  </footer>
+
+</div>
+</body>
+</html>

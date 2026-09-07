@@ -15,7 +15,7 @@
 | ❌ 不是 | 一次性对话产物 |
 | ✅ 是 | 结构化、模板化、可直接交付的产出（HTML 报告 / 结构化纪要 / 知识卡片） |
 
-**覆盖面**：10 个 Skill，跨金融分析、会议协同、知识沉淀、HR、AI 安全、学习闭环六类真实场景。
+**覆盖面**：11 个 Skill，跨金融分析、会议协同、知识沉淀、HR、AI 安全、学习闭环六类真实场景。
 
 原简介：个人 AI Skill 孵化库。基于日常工作与学习场景画像分析，孵化高频、可复用的 skill，经真实场景实测后收录。
 
@@ -40,6 +40,7 @@
 | [mba-case-analysis](mba-case-analysis/) | 运营管理案例分析框架路由（利特尔法则/瓶颈/EOQ/排队论/报童模型等），含公式手册与完整示范 | "帮我拆这个案例" |
 | [xhs-video-report](xhs-video-report/) | 小红书科普视频→HTML 图文学习报告（登录态浏览器取直链→MLX 转录→抽关键帧→速览卡+深度笔记） | "帮我总结这个视频" |
 | [bili-video-report](bili-video-report/) | B 站视频（科普/教程/多P课程）→HTML 图文学习报告（playurl 免 yt-dlp 抓取→带时间戳转录→时间戳×关键帧对齐→速览卡+时间轴导航） | "帮我总结这个 B 站视频" |
+| [podcast-report](podcast-report/) | 播客单集（小宇宙为主）→HTML 图文学习报告（**纯 HTTP 取直链，免登录免 cookie**→全量转录→长音频分块→速览卡+**shownotes 章节时间轴**） | "帮我总结这期播客" |
 
 ### 报告模板类资产
 
@@ -47,6 +48,7 @@
 |---|---|
 | [xhs-video-report/references/report-template.html](xhs-video-report/references/report-template.html) | 视频学习报告 HTML 模板（速览卡 / 深度区块 / 图注 / 行动清单 / 质量说明，含打印与移动端适配） |
 | [bili-video-report/references/report-template.html](bili-video-report/references/report-template.html) | B 站版报告模板（额外含时间轴导航 / 多P分P索引 / 降级告知组件） |
+| [podcast-report/references/report-template.html](podcast-report/references/report-template.html) | 播客版报告模板（额外含 shownotes 章节时间轴 / 主播嘉宾信息 / Shownotes 原文折叠区 / 延伸资源表） |
 
 ## 安装
 
@@ -75,6 +77,8 @@ cp -R workbuddy-skills/<skill-name> ~/.workbuddy/skills/   # 用户级（所有�
 - **全部在本地运行**：本仓库的 skill 均为本地工作流，不收集任何使用数据、不上传你的文件/笔记/视频。
 - **凭据留在你机器上**：如 `bili-video-report` 通过浏览器导出的 B 站 cookie 仅存于你的
   `~/.cache/`，绝不写入报告或外传；请像保护密码一样对待该文件。
+- **尽量不碰凭据**：`podcast-report` 走公开页面抓取，**不需要登录态、不读写任何 cookie**，
+  因此天然没有凭据泄露面；仅 `xhs`/`bili` 两个 skill 需要浏览器登录态。
 - **无远程调用（除必要官方接口）**：视频/转录/报告均在本地生成；仅向数据源官方 API
   （B 站、HuggingFace 等）发起必要请求。
 - 安装前请自行审阅 `SKILL.md` 与 `scripts/`，理解它会在你的机器上做什么。
@@ -98,3 +102,12 @@ cp -R workbuddy-skills/<skill-name> ~/.workbuddy/skills/   # 用户级（所有�
   （20 分钟视频下载 5s，yt-dlp 需 18s 且不稳定）；**媒体层**复用 xhs 管线并新增带时间戳的 `segments.json`；
   **报告层**吸收第三方多P分组、知识图谱、降级告知优点，新增「时间戳×关键帧对齐」时间轴导航。
   首份真实报告实测：19分50秒视频 → 下载 5s + 转录 132s（约 9 倍实时）/ 6290 字 / 461 时间戳分段 / 18 帧引用 6 帧。
+- 2026-09-07：第 11 个 skill [podcast-report](podcast-report/) 发布，学习闭环补齐最后一块拼图（视频/图文/音频全覆盖）。
+  **抓取层是三个平台里最干净的**：小宇宙把完整 episode 对象内嵌在页面 `__NEXT_DATA__` 里，
+  `enclosure.url` 即无鉴权音频直链 → 纯 HTTP GET 一次搞定，**不需要登录、cookie、浏览器自动化，也不需要 yt-dlp**
+  （对比：小红书必须 `xsec_token`，B 站需 wbi 签名或 cookie 且 yt-dlp 常 412）。
+  **媒体层**复用 xhs/bili 管线但去掉抽帧（播客无画面），并针对长音频新增 `chunk.py` 分块
+  （<30min 不切 / 30–90min 按 15min / >90min 按 20min）——长播客 5 万字全量塞上下文会爆且成稿质量下降。
+  **报告层**新增视频类没有的素材：shownotes 章节时间轴、主播嘉宾信息、Shownotes 原文折叠区、延伸资源表。
+  首份真实报告：张小珺 152 期《领读 Kimi K3 技术报告》124 分钟 → 下载 2s + 转录 9.5 分钟（约 13× 实时）/ 53,124 字；
+  收录前另用 13 分钟样本（声动早咖啡）端到端回归：4105 字 / 370 时间戳分段 / 耗时 1.2 分钟。
