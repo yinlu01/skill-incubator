@@ -38,7 +38,7 @@
 | [feynman-flashcard](feynman-flashcard/) | 笔记反向生成费曼自测问答卡（概念/机制/应用/辨析四层，先答后看，间隔重复） | "考考我" |
 | [weekly-learning-review](weekly-learning-review/) | 学习周报：聚合打卡/读书/卡片产出数据（固定本地数据源） | "出个学习周报" |
 | [mba-case-analysis](mba-case-analysis/) | 运营管理案例分析框架路由（利特尔法则/瓶颈/EOQ/排队论/报童模型等），含公式手册与完整示范 | "帮我拆这个案例" |
-| [xhs-video-report](xhs-video-report/) | 小红书科普视频→HTML 图文学习报告（登录态浏览器取直链→MLX 转录→抽关键帧→速览卡+深度笔记） | "帮我总结这个视频" |
+| [xhs-video-report](xhs-video-report/) | 小红书科普视频→HTML 图文学习报告（**纯 HTTP 优先取直链**，bsk 兜底→MLX 转录→抽关键帧→速览卡+深度笔记） | "帮我总结这个视频" |
 | [bili-video-report](bili-video-report/) | B 站视频（科普/教程/多P课程）→HTML 图文学习报告（playurl 免 yt-dlp 抓取→带时间戳转录→时间戳×关键帧对齐→速览卡+时间轴导航） | "帮我总结这个 B 站视频" |
 | [podcast-report](podcast-report/) | 播客单集（小宇宙为主）→HTML 图文学习报告（**纯 HTTP 取直链，免登录免 cookie**→全量转录→长音频分块→速览卡+**shownotes 章节时间轴**） | "帮我总结这期播客" |
 
@@ -49,6 +49,10 @@
 | [xhs-video-report/references/report-template.html](xhs-video-report/references/report-template.html) | 视频学习报告 HTML 模板（速览卡 / 深度区块 / 图注 / 行动清单 / 质量说明，含打印与移动端适配） |
 | [bili-video-report/references/report-template.html](bili-video-report/references/report-template.html) | B 站版报告模板（额外含时间轴导航 / 多P分P索引 / 降级告知组件） |
 | [podcast-report/references/report-template.html](podcast-report/references/report-template.html) | 播客版报告模板（额外含 shownotes 章节时间轴 / 主播嘉宾信息 / Shownotes 原文折叠区 / 延伸资源表） |
+
+**产出示例**——`xhs-video-report` 生成的双层 HTML 学习报告（速览卡 + 深度笔记），真实产出：Palantir DevCon 5 本体设计原则分享，24:38 视频 → 25,633 字转录 → 双层报告：
+
+![xhs-video-report 产出示例：Palantir 本体报告速览卡](xhs-video-report/assets/report-preview.png)
 
 ## 安装
 
