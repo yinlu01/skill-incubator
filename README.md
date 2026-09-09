@@ -50,9 +50,15 @@
 | [bili-video-report/references/report-template.html](bili-video-report/references/report-template.html) | B 站版报告模板（额外含时间轴导航 / 多P分P索引 / 降级告知组件） |
 | [podcast-report/references/report-template.html](podcast-report/references/report-template.html) | 播客版报告模板（额外含 shownotes 章节时间轴 / 主播嘉宾信息 / Shownotes 原文折叠区 / 延伸资源表） |
 
-**产出示例**——`xhs-video-report` 生成的双层 HTML 学习报告（速览卡 + 深度笔记），真实产出：Palantir DevCon 5 本体设计原则分享，24:38 视频 → 25,633 字转录 → 双层报告：
+**产出示例**——`xhs-video-report` 生成的双层 HTML 学习报告（速览卡 + 深度笔记），真实产出：Palantir DevCon 5 本体设计原则分享，24:38 视频 → 25,633 字转录 → 双层报告。
 
-![xhs-video-report 产出示例：Palantir 本体报告速览卡](xhs-video-report/assets/report-preview.png)
+**第一层 · 速览卡**（30 秒判断值不值得细看：一句话结论 + 三条核心点 + 星级判断 + 一个行动）：
+
+![xhs-video-report 产出示例：速览卡](xhs-video-report/assets/report-preview.png)
+
+**第二层 · 深度笔记**（可复用方法 + 图注 + 反直觉点 + 与我何干 + 行动清单 + 质量说明）：
+
+![xhs-video-report 产出示例：深度笔记层](xhs-video-report/assets/report-preview-deep.png)
 
 ## 安装
 
