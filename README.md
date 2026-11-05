@@ -121,3 +121,8 @@ cp -R workbuddy-skills/<skill-name> ~/.workbuddy/skills/   # 用户级（所有�
   **报告层**新增视频类没有的素材：shownotes 章节时间轴、主播嘉宾信息、Shownotes 原文折叠区、延伸资源表。
   首份真实报告：张小珺 152 期《领读 Kimi K3 技术报告》124 分钟 → 下载 2s + 转录 9.5 分钟（约 13× 实时）/ 53,124 字；
   收录前另用 13 分钟样本（声动早咖啡）端到端回归：4105 字 / 370 时间戳分段 / 耗时 1.2 分钟。
+- 2026-11-05：[xhs-video-report](xhs-video-report/) 环境固化更新。踩坑根因：宿主自带 Python 会随版本
+  升级清理而丢包（mlx-whisper 消失），且沙箱环境拦截临时文件删除会让 pip/uv 安装假失败
+  （"No usable temporary directory"）。固化方案：**skill 专属 venv**（`.venv`，与宿主 Python 解耦），
+  SKILL.md「前置依赖」段重写为标准入口 + 一键重建命令（uv 全局缓存秒级恢复），补 `requirements.txt`。
+  同日交付实测报告：38 分钟英文演讲 → 转录 29,966 字符 / 抽 10 帧引用 5 帧。

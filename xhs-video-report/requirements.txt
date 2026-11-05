@@ -1,0 +1,6 @@
+# xhs-video-report 运行依赖（仅 macOS / Apple Silicon）
+# 安装方式见 SKILL.md「前置依赖」：建议装入 skill 专属 venv
+#   uv venv .venv --python 3.13
+#   uv pip install --python .venv/bin/python -r requirements.txt
+mlx-whisper>=0.4
+imageio-ffmpeg>=0.5

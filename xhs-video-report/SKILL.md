@@ -36,13 +36,28 @@ agent_created: true
 为什么不用 yt-dlp：对小红书成功率仅约 10%（移动优先 URL + 签名校验）。
 bsk 兜底路径走用户已登录的真实浏览器，**不需要用户提供任何账号密码**。
 
-## 前置依赖
+## 前置依赖（2026-11-05 固化：专属 venv，一次装好不再重装）
 
-- `imageio-ffmpeg` — 提供 aarch64 原生 ffmpeg 二进制
-- `mlx-whisper` — Apple Silicon GPU 加速转录（M4 上 10 分钟音频约几十秒）
-- `bsk` — 通常位于 `~/.local/bin/bsk`，需浏览器扩展已连接（`bsk doctor` 检查）
+**所有命令统一用 skill 专属解释器**：`PY=~/.workbuddy/skills/xhs-video-report/.venv/bin/python`
+（fetch_meta / media.py / selfcheck 全部用它，禁止用系统 python 或 WorkBuddy 自带 python——
+那些环境会被随版本升级清掉，mlx-whisper 就丢了）。
+
+- 依赖清单（已装在 `.venv` 里）：`mlx-whisper`（Apple Silicon GPU 转录，M4 上 10 分钟音频约几十秒）、`imageio-ffmpeg`（aarch64 原生 ffmpeg）、`mlx-metal`（mlx 的 macOS 后端，自动带上）
+- whisper 模型缓存在 `~/.cache/huggingface/`，与 venv 无关，不会丢
+- `bsk` — `~/.local/bin/bsk`，需浏览器扩展已连接（`bsk doctor` 检查），仅兜底路径用
+
+**venv 丢失/损坏时一键重建**（uv 有全局缓存，秒级完成）：
+```bash
+cd ~/.workbuddy/skills/xhs-video-report
+uv venv .venv --python 3.13
+uv pip install --python .venv/bin/python mlx-whisper imageio-ffmpeg
+```
 
 环境体检：`$PY scripts/selfcheck.py`，全绿才能跑通。
+
+**2026-11-05 踩坑记录（别再踩）**：WorkBuddy 自带 python（~/.workbuddy/binaries/python/versions/）
+会随版本清理而丢包；且沙箱模式下 pip/uv 的临时文件删除可能被安全中心拦截导致安装假失败——
+用户明确授权后关闭沙箱跑一次安装即可，或直接用上面的 uv 命令（走 ~/.cache/uv，不经 tempfile 探测）。
 
 **网络坑（脚本已自动处理，但要懂原理）**——2026-09-05 实测踩过：
 1. 代理环境下 huggingface.co 返回 502 → 脚本检测到代理后自动切 `HF_ENDPOINT=https://hf-mirror.com`
@@ -56,7 +71,7 @@ bsk 兜底路径走用户已登录的真实浏览器，**不需要用户提供�
 ### 第 1 步：取直链与元数据（风险最高，先探测）
 
 ```bash
-PY=<python 解释器绝对路径>
+PY=~/.workbuddy/skills/xhs-video-report/.venv/bin/python
 $PY scripts/fetch_meta.py "<小红书笔记URL>" --out /tmp/xhs_meta.json
 ```
 
